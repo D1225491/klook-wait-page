@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網頁維護中 | Klook</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fff3e0;
+            color: #ff6600;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        h1 {
+            margin: 10px 0;
+        }
+        .countdown {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .refresh-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #ff6600;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .refresh-btn:hover {
+            background-color: #e65c00;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>我們正在維護網站</h1>
+        <p>請稍等片刻，我們將於 <span class="countdown">30</span> 秒內恢復服務。</p>
+        <button class="refresh-btn" onclick="location.reload()">重新整理</button>
+    </div>
+    <script>
+        let countdown = 30;
+        const countdownElement = document.querySelector(".countdown");
+        function updateCountdown() {
+            if (countdown > 0) {
+                countdown--;
+                countdownElement.textContent = countdown;
+                setTimeout(updateCountdown, 1000);
+            } else {
+                location.reload(); // 倒數結束後自動重新整理
+            }
+        }
+        updateCountdown();
+    </script>
+</body>
+</html>
