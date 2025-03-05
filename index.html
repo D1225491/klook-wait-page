@@ -3,38 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>網頁維護中 | Klook</title>
+    <title>網站維護中 | Klook</title>
     <style>
+        /* 調整背景為更淡的橘色 */
         body {
-        font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #fff3e0;
-            color: #ff6600;
+            color: #ffffff;
             margin: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('https://www.totalntertainment.com/wp-content/uploads/Anson-Seabra.jpg');
+            background: #ffe5cc; /* 更淡的橘色 */
+            overflow: hidden;
         }
+
+        /* 白色容器區塊（加長寬度，但高度不變） */
         .container {
+            width: 200vw; /* 加長寬度 */
+            max-width: 900px;
+            height: 60vh; /* 維持原本高度 */
             padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: darkgrey;
+            border-radius: 15px;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
             animation: fadeIn 1.5s ease-in-out;
+            text-align: center;
+            position: relative;
+            background-image: url('https://img.ixintu.com/download/jpg/202005/444dc1773383fe714287b36dd8204f59_610_244.jpg!con');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         h1 {
             margin: 10px 0;
+            color: #ff6600;
+            top: 10vh;
         }
-        .countdown {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .refresh-btn {
+
+        /* 五線譜區 */
+        .staff {
+            position: relative;
+            width: 100%;
+            height: 150px;
             margin-top: 20px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/7a/Empty_staff.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* 音符動畫 */
+        .note {
+            position: absolute;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.8s ease-in-out, top 0.8s ease-in-out;
+        }
+
+        /* 重新整理按鈕 */
+        .refresh-btn {
+            margin-top: 10px;
             padding: 10px 20px;
             border: none;
             background-color: #ff6600;
@@ -44,9 +78,12 @@
             cursor: pointer;
             transition: background 0.3s;
         }
+
         .refresh-btn:hover {
             background-color: #e65c00;
         }
+
+        /* 淡入動畫 */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -54,24 +91,44 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>我們正在維護網站</h1>
-        <p>請稍等片刻，我們將於 <span class="countdown">30</span> 秒內恢復服務。</p>
-        <button class="refresh-btn" onclick="location.reload()">重新整理</button>
-    </div>
-    <script>
-        let countdown = 30;
-        const countdownElement = document.querySelector(".countdown");
-        function updateCountdown() {
-            if (countdown > 0) {
-                countdown--;
-                countdownElement.textContent = countdown;
-                setTimeout(updateCountdown, 1000);
-            } else {
-                location.reload(); // 倒數結束後自動重新整理
-            }
+<div class="container">
+    <h1>點擊音符來完成音階 🎶</h1>
+    <div class="staff"></div>
+    <button class="refresh-btn" onclick="location.reload()">重新整理</button>
+</div>
+
+<script>
+    const staff = document.querySelector(".staff");
+    const notes = ["do", "re", "mi", "fa", "sol", "la", "si", "do"];
+    const notePositions = [110, 95, 80, 65, 50, 35, 20, 5]; // 五線譜上的對應音高
+    let placedNotes = 0; // 記錄已放置的音符數量
+
+    function createNotes() {
+        for (let i = 0; i < notes.length; i++) {
+            const note = document.createElement("div");
+            note.classList.add("note");
+            note.innerHTML = "🎵";
+            note.style.left = Math.random() * 80 + "vw";
+            note.style.top = Math.random() * 60 + 20 + "vh";
+            document.body.appendChild(note);
+
+            note.addEventListener("click", () => {
+                note.style.transform = "scale(1.5)";
+                note.style.left = `${10 + i * 10}%`; // 移動到五線譜
+                note.style.top = notePositions[i] + "px";
+                setTimeout(() => {
+                    note.style.transform = "scale(1)";
+                }, 500);
+
+                placedNotes++;
+                if (placedNotes === notes.length) {
+                    document.querySelector("h1").textContent = "維護完成 🎉";
+                }
+            });
         }
-        updateCountdown();
-    </script>
+    }
+
+    createNotes();
+</script>
 </body>
 </html>
